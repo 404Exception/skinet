@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
     <Compile Remove="NewFolder1\**" />
+    <Content Remove="Migrations\**" />
     <Content Remove="NewFolder1\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
+    <None Remove="Migrations\**" />
     <None Remove="NewFolder1\**" />
   </ItemGroup>
 
@@ -20,10 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
