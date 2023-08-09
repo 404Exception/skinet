@@ -18,15 +18,31 @@ namespace Infrastructure.Repositoies
         {
             _dataContext = dataContext;
         }
+
+        public async Task<IReadOnlyList<ProductBrand>> GetAllProductBrandsAsync()
+        {
+            return await _dataContext.ProductBrands.ToListAsync();
+        }
+
         public async Task<IReadOnlyList<Product>> GetAllProductsAsync()
         {
-            return await _dataContext.Products.ToListAsync();
+            return await _dataContext.Products
+                .Include(p => p.ProductBrand)
+                .Include(p => p.ProductType).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<ProductType>> GetAllProductTypesAsync()
+        {
+            return await _dataContext.ProductTypes.ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
 #pragma warning disable CS8603 // Possible null reference return.
-            return await _dataContext.Products.FindAsync(id);
+            return await _dataContext.Products
+                .Include(p => p.ProductBrand)
+                .Include(p => p.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
     }
