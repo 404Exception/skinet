@@ -1,12 +1,10 @@
-﻿using Infrastructure.Data;
-using Core.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Core.Interface;
-using Core.Specification;
+﻿using API.Errors;
 using API.ReturnDto;
 using AutoMapper;
-using API.Errors;
+using Core.Entities;
+using Core.Interface;
+using Core.Specification;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace API.Controllers
@@ -30,9 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts(string? sort)
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams productSpecParams)
         {
-            var spec = new ProductWithTypesAndBrands(sort);
+            var spec = new ProductWithTypesAndBrands(productSpecParams);
             var product = await _productRepo.ListAsync(spec);
             return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(product));
         }

@@ -22,6 +22,10 @@ namespace Infrastructure.Repositoies
             {
                 query = query.OrderByDescending(spec.OrderByDesc);
             }
+            if (spec.IsPaginationEnabled)
+            { 
+            query = query.Skip(spec.Skip).Take(spec.Take);
+            }
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));

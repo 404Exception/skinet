@@ -4,15 +4,18 @@ namespace Core.Specification
 {
     public class ProductWithTypesAndBrands : Specification<Product>
     {
-        public ProductWithTypesAndBrands(string sort)
+        public ProductWithTypesAndBrands(ProductSpecParams productSpec) :
+            base(x => 
+            (productSpec.BrandId > 0 || x.ProductBrandId == productSpec.BrandId) &&
+            (productSpec.TypeId > 0 || x.ProductTypeId == productSpec.TypeId))
         {
             AddInclude(x => x.ProductType);
             AddInclude(x => x.ProductBrand);
             AddOrderBy(x => x.Name);
 
-            if (!string.IsNullOrEmpty(sort))
+            if (!string.IsNullOrEmpty(productSpec.Sort))
             { 
-            switch (sort)
+            switch (productSpec.Sort)
                 {
                     case "priceAsc":
                         AddOrderBy(p => p.Price);
