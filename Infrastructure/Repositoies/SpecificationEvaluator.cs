@@ -14,9 +14,19 @@ namespace Infrastructure.Repositoies
             {
                 query = query.Where(spec.Criteria);
             }
+            if (spec.OrderBy != null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+            if (spec.OrderByDesc != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDesc);
+            }
+
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
+
             return query;
         }
     }
