@@ -6,12 +6,14 @@ namespace Core.Specification
     {
         public ProductWithTypesAndBrands(ProductSpecParams productSpec) :
             base(x => 
-            (productSpec.BrandId > 0 || x.ProductBrandId == productSpec.BrandId) &&
-            (productSpec.TypeId > 0 || x.ProductTypeId == productSpec.TypeId))
+            (!productSpec.BrandId.HasValue || x.ProductBrandId == productSpec.BrandId) &&
+            (!productSpec.TypeId.HasValue || x.ProductTypeId == productSpec.TypeId))
         {
             AddInclude(x => x.ProductType);
             AddInclude(x => x.ProductBrand);
             AddOrderBy(x => x.Name);
+            ApplyPaging(productSpec.PageSize * (productSpec.PageIndex - 1),
+                productSpec.PageSize);
 
             if (!string.IsNullOrEmpty(productSpec.Sort))
             { 
