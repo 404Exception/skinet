@@ -1,16 +1,13 @@
 ﻿
 using Core.Entities;
+using Infrastructure.Data.Config;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Data
 {
-    public class DataContext : DbContext
+    public class DataContext(DbContextOptions options) : DbContext(options)
     {
-        public DataContext(DbContextOptions options) : base(options)
-        {
-        }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
@@ -18,7 +15,7 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductConfiguration).Assembly);
 
             if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
             {
