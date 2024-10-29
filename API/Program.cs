@@ -1,6 +1,7 @@
 using API.Extensions;
 using API.Middleware;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,7 @@ var context = service.GetRequiredService<DataContext>();
 var logger = service.GetRequiredService<ILogger<Program>>();
 try
 {
-   // await context.Database.MigrateAsync();
+    await context.Database.MigrateAsync();
     await StoreContextSeed.SeedAsync(context);
 }
 catch (Exception ex)
